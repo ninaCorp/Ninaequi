@@ -254,11 +254,11 @@ export default definePlugin({
         },
         // Allow stickers to be sent everywhere
         {
-            find: "canUseCustomStickersEverywhere:",
+            find: "canUseCustomStickersEverywhere:function",
             predicate: () => settings.store.enableStickerBypass,
             replacement: {
-                match: /(?<=canUseCustomStickersEverywhere:)\i/,
-                replace: "()=>true"
+                match: /canUseCustomStickersEverywhere:function\(\i\){/,
+                replace: "$&return true;"
             },
         },
         // Make stickers always available
@@ -272,15 +272,15 @@ export default definePlugin({
         },
         // Allow streaming with high quality
         {
-            find: "canUseHighVideoUploadQuality:",
+            find: "canUseHighVideoUploadQuality:function",
             predicate: () => settings.store.enableStreamQualityBypass,
             replacement: [
                 "canUseHighVideoUploadQuality",
                 "canStreamQuality",
             ].map(func => {
                 return {
-                    match: new RegExp(`(?<=${func}:)\\i`, "g"),
-                    replace: "()=>true"
+                    match: new RegExp(`${func}:function\\(\\i(?:,\\i)?\\){`, "g"),
+                    replace: "$&return true;"
                 };
             })
         },
@@ -295,10 +295,10 @@ export default definePlugin({
         },
         // Allow client themes to be changeable
         {
-            find: "canUseClientThemes:",
+            find: "canUseClientThemes:function",
             replacement: {
-                match: /(?<=canUseClientThemes:)\i/,
-                replace: "()=>true"
+                match: /canUseClientThemes:function\(\i\){/,
+                replace: "$&return true;"
             }
         },
         {
@@ -306,8 +306,8 @@ export default definePlugin({
             replacement: [
                 {
                     // Overwrite incoming connection settings proto with our local settings
-                    match: /function (\i)\((\i)\){(?=.*CONNECTION_OPEN:\1)/,
-                    replace: (m, funcName, props) => `${m}$self.handleProtoChange(${props}.userSettingsProto,${props}.user);`
+                    match: /CONNECTION_OPEN:function\((\i)\){/,
+                    replace: (m, props) => `${m}$self.handleProtoChange(${props}.userSettingsProto,${props}.user);`
                 },
                 {
                     // Overwrite non local proto changes with our local settings
@@ -400,10 +400,10 @@ export default definePlugin({
         },
         // Allow using custom app icons
         {
-            find: "canUsePremiumAppIcons:",
+            find: "canUsePremiumAppIcons:function",
             replacement: {
-                match: /(?<=canUsePremiumAppIcons:)\i/,
-                replace: "()=>true"
+                match: /canUsePremiumAppIcons:function\(\i\){/,
+                replace: "$&return true;"
             }
         },
         // Separate patch for allowing using custom app icons
@@ -424,10 +424,10 @@ export default definePlugin({
         },
         // Allow using custom notification sounds
         {
-            find: "canUseCustomNotificationSounds:",
+            find: "canUseCustomNotificationSounds:function",
             replacement: {
-                match: /(?<=canUseCustomNotificationSounds:)\i/,
-                replace: "()=>true"
+                match: /canUseCustomNotificationSounds:function\(\i\){/,
+                replace: "$&return true;"
             }
         }
     ],

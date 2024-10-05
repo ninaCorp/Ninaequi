@@ -21,7 +21,7 @@ const getDMChannelIcon = findByCodeLazy(".getChannelIconURL({");
 const VoiceStateStore = findStoreLazy("VoiceStateStore");
 
 const UserSummaryItem = findComponentByCodeLazy("defaultRenderUser", "showDefaultAvatarsForNullUsers");
-const Avatar = findComponentByCodeLazy(".status)/2):0");
+const Avatar = findComponentByCodeLazy(".AVATAR_STATUS_TYPING_16;");
 const GroupDMAvatars = findComponentByCodeLazy(".AvatarSizeSpecs[", "getAvatarURL");
 
 const ActionButtonClasses = findByPropsLazy("actionButton", "highlight");
